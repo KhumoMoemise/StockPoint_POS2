@@ -64,12 +64,14 @@ class SupplierController extends Controller
         if ($supplier->products()->exists() || $supplier->purchases()->exists()) {
             return back()->with('error', 'This supplier is linked to products or purchases and cannot be deleted.');
         }
+        
 
         $name = $supplier->name;
         $supplier->delete();
 
         return back()->with('success', "Supplier {$name} deleted.");
     }
+    
 
     private function validateSupplier(Request $request): array
     {

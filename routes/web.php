@@ -270,13 +270,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('products/{product}/stock', [AdminProductController::class, 'adjustStock'])->name('products.stock');
     Route::get('products/{product}/movements', [AdminProductController::class, 'movements'])->name('products.movements');
     Route::get('products-export', [AdminProductController::class, 'export'])->name('products.export');
+
     //SUPPLIERS
     Route::resource('suppliers', AdminSupplierController::class)->only(['index', 'store', 'update', 'destroy']);
-    Route::get('suppliers', [AdminSupplierController::class, 'index'])->name('suppliers.index');
-    Route::post('suppliers', [AdminSupplierController::class, 'store'])->name('suppliers.store');
-    Route::put('suppliers/{supplier}', [AdminSupplierController::class, 'update'])->name('suppliers.update');
-    Route::delete('suppliers/{supplier}', [AdminSupplierController::class, 'destroy'])->name('suppliers.destroy');
 
+    //PURCHASES
     Route::get('purchases', [AdminPurchaseController::class, 'index'])->name('purchases.index');
     Route::post('purchases', [AdminPurchaseController::class, 'store'])->name('purchases.store');
     Route::post('purchases/{purchase}/receive', [AdminPurchaseController::class, 'receive'])->name('purchases.receive');
