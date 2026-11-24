@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
 {
@@ -59,18 +60,22 @@ class SupplierController extends Controller
         return back()->with('success', "Supplier {$supplier->name} updated.");
     }
 
-    public function destroy(Supplier $supplier): RedirectResponse
-    {
-        if ($supplier->products()->exists() || $supplier->purchases()->exists()) {
-            return back()->with('error', 'This supplier is linked to products or purchases and cannot be deleted.');
-        }
-        
 
-        $name = $supplier->name;
+public function destroy(Supplier $supplier): RedirectResponse
+{
+    $supplierName = $supplier->name;
+
+    DB::transaction(function () use ($supplier) {
         $supplier->delete();
+    });
 
-        return back()->with('success', "Supplier {$name} deleted.");
-    }
+    return redirect()
+        ->route('admin.suppliers.index')
+        ->with(
+            'success',
+            "Supplier {$supplierName} and all linked records have been deleted."
+        );
+}
     
 
     private function validateSupplier(Request $request): array

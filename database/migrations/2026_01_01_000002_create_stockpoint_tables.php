@@ -26,8 +26,8 @@ return new class extends Migration
 
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('supplier_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained();
+            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->cascadeOnDelete();
             $table->string('name');
             $table->string('sku')->unique();
             $table->string('barcode')->nullable()->unique();
@@ -44,9 +44,9 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->nullable()->unique();
-            $table->foreignId('supplier_id')->constrained()->restrictOnDelete();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('received_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('supplier_id')->constrained('suppliers')->cascadeOnDelete();
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('received_by')->nullable()->constrained('users');
             $table->string('status')->default('pending');
             $table->decimal('total', 12, 2)->default(0);
             $table->text('notes')->nullable();
@@ -57,8 +57,8 @@ return new class extends Migration
 
         Schema::create('purchase_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('purchase_id')->constrained();
             $table->foreignId('purchase_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained()->restrictOnDelete();
             $table->integer('quantity');
             $table->decimal('unit_cost', 12, 2);
             $table->decimal('subtotal', 12, 2);
@@ -68,7 +68,7 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('receipt_number')->nullable()->unique();
-            $table->foreignId('user_id')->constrained()->restrictOnDelete();
+            $table->foreignId('user_id')->constrained();
             $table->decimal('subtotal', 12, 2);
             $table->decimal('vat', 12, 2);
             $table->decimal('total', 12, 2);
@@ -79,7 +79,7 @@ return new class extends Migration
 
         Schema::create('sale_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('sale_id')->constrained();
             $table->foreignId('product_id')->nullable()->constrained()->nullOnDelete();
             $table->string('product_name');
             $table->string('sku')->nullable();
@@ -91,7 +91,7 @@ return new class extends Migration
 
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('sale_id')->constrained();
             $table->string('method');
             $table->decimal('amount', 12, 2);
             $table->decimal('change', 12, 2)->default(0);
@@ -102,7 +102,7 @@ return new class extends Migration
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->string('type');
             $table->integer('quantity');
             $table->integer('balance_after');
