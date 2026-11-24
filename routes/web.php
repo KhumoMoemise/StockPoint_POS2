@@ -279,12 +279,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('purchases', [AdminPurchaseController::class, 'store'])->name('purchases.store');
     Route::post('purchases/{purchase}/receive', [AdminPurchaseController::class, 'receive'])->name('purchases.receive');
 
+    //SALES
     Route::get('sales', [AdminSaleController::class, 'index'])->name('sales.index');
     Route::get('sales-export', [AdminSaleController::class, 'export'])->name('sales.export');
 
+    //REPORTS
     Route::get('reports', [AdminReportController::class, 'index'])->name('reports.index');
     Route::get('reports-export', [AdminReportController::class, 'export'])->name('reports.export');
 
+    //ADMIN COTROLL
     Route::get('settings', [AdminSettingsController::class, 'index'])->name('settings.index');
     Route::post('settings', [AdminSettingsController::class, 'update'])->name('settings.update');
     Route::post('cashiers', [AdminSettingsController::class, 'storeCashier'])->name('cashiers.store');

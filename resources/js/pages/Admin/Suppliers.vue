@@ -10,7 +10,7 @@ const props = defineProps<{
         name: string;
         contact_person: string | null;
         email: string | null;
-        phone: string | null;
+        phone: int | null;
         address: string | null;
         products_count: number;
         purchases_count: number;
@@ -117,9 +117,7 @@ if (props.openCreate) {
                             <td>
                                 <div class="action-row">
                                     <button class="btn btn-small" @click="openEdit(supplier)">Edit</button>
-                                    <button class="btn btn-small btn-danger" :disabled="!supplier.can_delete" @click="destroy(supplier)">
-                                        Delete
-                                    </button>
+                                    <button class="btn btn-small btn-danger" @click="destroy(supplier)">Delete</button>
                                 </div>
                             </td>
                         </tr>
