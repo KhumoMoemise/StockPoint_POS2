@@ -266,15 +266,12 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     //PRODUCTS
-    /*Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
-    Route::post('products', [AdminProductController::class, 'store'])->name('products.store');
-    Route::put('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
-    Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');*/
     Route::resource('products', AdminProductController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::post('products/{product}/stock', [AdminProductController::class, 'adjustStock'])->name('products.stock');
     Route::get('products/{product}/movements', [AdminProductController::class, 'movements'])->name('products.movements');
     Route::get('products-export', [AdminProductController::class, 'export'])->name('products.export');
-
+    //SUPPLIERS
+    Route::resource('suppliers', AdminSupplierController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::get('suppliers', [AdminSupplierController::class, 'index'])->name('suppliers.index');
     Route::post('suppliers', [AdminSupplierController::class, 'store'])->name('suppliers.store');
     Route::put('suppliers/{supplier}', [AdminSupplierController::class, 'update'])->name('suppliers.update');
