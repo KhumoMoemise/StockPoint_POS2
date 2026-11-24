@@ -265,10 +265,12 @@ foreach ($infoPages as $slug => $page) {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
+    //PRODUCTS
+    /*Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
     Route::post('products', [AdminProductController::class, 'store'])->name('products.store');
     Route::put('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
-    Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+    Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');*/
+    Route::resource('products', AdminProductController::class)->except(['index', 'store', 'update', 'destroy']);
     Route::post('products/{product}/stock', [AdminProductController::class, 'adjustStock'])->name('products.stock');
     Route::get('products/{product}/movements', [AdminProductController::class, 'movements'])->name('products.movements');
     Route::get('products-export', [AdminProductController::class, 'export'])->name('products.export');
